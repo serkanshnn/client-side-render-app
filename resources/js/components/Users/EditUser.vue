@@ -1,12 +1,12 @@
 <template>
-    <layout title="Create User">
-        <form class="space-y-8 divide-y divide-gray-200" @submit.prevent="submit">
+    <layout title="Edit User">
+        <form class="space-y-8 divide-y divide-gray-200" @submit.prevent="save">
             <div class="space-y-8 divide-y divide-gray-200 sm:space-y-5">
 
                 <div class="pt-8 space-y-6 sm:pt-10 sm:space-y-5">
                     <div>
                         <h3 class="text-lg leading-6 font-medium text-gray-900">
-                            Create User
+                            Edit User
                         </h3>
                     </div>
                     <div class="space-y-6 sm:space-y-5">
@@ -66,32 +66,35 @@
 </template>
 
 <script>
-import axios from 'axios'
-import { Errors } from 'form-backend-validation';
 import {ref} from "vue";
+import { Errors } from 'form-backend-validation';
+import axios from "axios";
 
 export default {
-    setup: function () {
+    props: {
+        user: {
+            required: true,
+            type: Array
+        }
+    },
+    setup(props) {
         const form = ref({
-            name: null,
-            email: null,
+            name: props.user.name,
+            email: props.user.email,
             password: null,
         });
+
         const errors = ref(new Errors());
 
-        function submit() {
-            axios.post('/users', form.value).then(response => {
+        function save() {
+            axios.put('/users/' + props.user.id, form.value).then(response => {
                 console.log("congrats");
             }).catch(error => {
                 errors.value = new Errors(error.response.data.errors)
             });
-            form.value.name = '';
-            form.value.email = '';
-            form.value.password = '';
         }
-
-        return {form, errors, submit};
-    },
+        return { form, save, errors };
+    }
 }
 </script>
 

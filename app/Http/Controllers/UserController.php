@@ -57,4 +57,29 @@ class UserController extends Controller
     {
         return View::component('User', ['user' => $user->only('id', 'name', 'email', 'created_at')]);
     }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(User $user)
+    {
+        return View::component('EditUser', ['user' => $user->only('id', 'name', 'email', 'created_at')]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function update(User $user, Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required',
+            'email' => 'required|unique:users,email,'.$user->id,
+            'password' => 'required',
+        ]);
+        $user->update($data);
+    }
 }
