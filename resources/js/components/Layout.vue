@@ -1,17 +1,25 @@
 <template>
-    <div class="container">
-        <nav class="my-5">
-            <a class="mr-3" href="/">Users</a>
-        </nav>
-        <main>
+    <div>
+        <Header></Header>
+        <main class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <slot></slot>
         </main>
     </div>
 </template>
 
 <script>
+import Header from "./Header";
+
 export default {
-    props: ['title'],
+    props: {
+        title: {
+            required: true,
+            type: String
+        }
+    },
+    components: {
+        Header
+    },
     mounted() {
         this.updatePageTitle(this.title)
     },
