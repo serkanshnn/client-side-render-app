@@ -55,7 +55,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return View::component('User', ['user' => $user->only('id', 'name', 'email', 'created_at')]);
+        return View::component('UserDetail', ['user' => $user->only('id', 'name', 'email', 'created_at')]);
     }
 
     /**
